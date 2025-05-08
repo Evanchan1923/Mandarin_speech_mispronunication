@@ -1,0 +1,54 @@
+datasets:
+    data_path: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/speech_attribute/datasets/CommonVoice13_CN'
+    train_part: 'train'
+    validation_part: 'validation'
+    test_part: 'test,validation'
+    cache_dir: '/Users/evanchan19/Desktop/cache_dir'
+
+phonological:
+    attribute_list_file: 'data/Mandarin_List_attr_withDiph.txt'   # KEYYYYYYYYYYYY
+    phoneme2att_map_file: 'data/IPA_dragonMapperV3.csv'              # KEYYYYYYYYYYYY
+    phonetic_alphabet: 'ipaDragon'                                      # KEYYYYYYYYYYYY
+
+preprocessor:
+    sampling_rate: 16000
+    do_normalize: true
+    return_attention_mask: false                            # false
+    phoneme_column: 'transcript_IPAwithTone'                           # KEYYYYYYYYYYYY
+    do_phonemize: false
+    num_proc: 1
+    max_length_in_sec: 10
+    save_preprocessed_data: true
+    load_from_preprocessed_data: true
+    decouple_diphthongs: true                             # true  when noDiph, otherwise FALSE
+    diphthongs_to_monophthongs_map_file: 'data/Diphthongs_Mandarin.csv'
+
+training:
+    model_path: 'C:\\Users\\Evanc\\Desktop\\Machine_Leraning\\Mostafa_Phono_model\\models\\wav2vec2-large-robust'
+    gradient_checkpointing: true
+    ctc_loss_reduction: 'mean'
+    freeze_feature_encoder: true
+    group_by_length: true
+    train_batch_size: 32
+    evaluation_strategy: 'steps'
+    enable_fp16: false                      # true
+    num_train_epochs: 10
+    save_steps: 3000
+    logging_steps: 1000
+    prediction_loss_only: true
+    learning_rate: 1.5e-04         # 1e-05
+    weight_decay: 0.005            # 0.005
+    warmup_ratio: 0.2               # 0.1
+    load_best_model_at_end: true
+    save_total_limit: 2
+
+evaluation:
+    spaces_between_special_tokens: true
+    metric_path: 'metrics/wer.py'
+    eval_extra_data: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/speech_attribute/datasets/CommonVoice13_V4'
+    eval_extra_data_parts: 'test'
+    eval_model_path: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/models/cVoice13_withDiph_LR_v2'
+    auto_eval: true
+
+output:
+    working_dir: '/Users/evanchan19/Desktop/evulation'
