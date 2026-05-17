@@ -3,6 +3,8 @@
 
 This project focuses on training and evaluating models that transcribe speech into articulatory or phonological attributes based on IPA phonemes.
 
+The evaluation notebooks and notes now live in [`evaluation/`](evaluation/). That section is still work in progress and is included mainly as research reference material.
+
 ---
 
 ## 📦 Training
@@ -14,11 +16,20 @@ To train the Speech Attribute model, use one of the provided configuration files
 python train.py --config_file=mandarin_setting.yaml train_SA_model
 ```
 
+The YAML config also includes a `hardware` section for GPU selection:
+
+- `num_gpus`: how many GPUs to use.
+- `gpu_ids`: which GPU indices to expose to the training script.
+
+For example, `num_gpus: 2` with `gpu_ids: '0,1'` enables two-GPU training in a single run.
+
 ---
 
 ## 🧪 Evaluation
 
 You can evaluate a pre-trained model on different datasets by specifying the evaluation data path, part of the dataset, and other parameters.
+
+For notebook-based exploratory evaluation and mispronunciation analysis, see [`evaluation/README.md`](evaluation/README.md).
 
 ### ▶️ Evaluate on AiShell (small subset)
 

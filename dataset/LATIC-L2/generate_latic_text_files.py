@@ -69,13 +69,9 @@ def collect_audio_lookup(audio_dir: Path) -> dict[str, str]:
     if not audio_dir.exists():
         raise FileNotFoundError(f"Audio directory does not exist: {audio_dir}")
 
-    audio_files = sorted(
-        path for path in audio_dir.rglob("*") if path.is_file() and path.suffix.lower() == ".wav"
-    )
+    audio_files = sorted(path for path in audio_dir.rglob("*") if path.is_file() and path.suffix.lower() == ".wav")
     if not audio_files:
-        raise FileNotFoundError(
-            f"No .wav files were found under {audio_dir}. Download or unpack the audio set first."
-        )
+        raise FileNotFoundError(f"No .wav files were found under {audio_dir}. Download or unpack the audio set first.")
 
     audio_lookup: dict[str, str] = {}
     for path in audio_files:
@@ -139,11 +135,7 @@ def main() -> None:
         "suppose notation": suppose_notations,
     }
 
-    common_ids = [
-        audio_id
-        for audio_id in audio_ids
-        if all(audio_id in mapping for mapping in sources.values())
-    ]
+    common_ids = [audio_id for audio_id in audio_ids if all(audio_id in mapping for mapping in sources.values())]
     if not common_ids:
         raise ValueError("No shared utterance IDs were found across audio and annotation sources.")
 

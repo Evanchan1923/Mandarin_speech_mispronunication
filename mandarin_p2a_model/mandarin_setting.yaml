@@ -1,9 +1,13 @@
+hardware:
+    num_gpus: 2        # examples: 1 for single GPU, 2 for two GPUs, 0 for CPU only
+    gpu_ids: '0,1'     # examples: '0' for one GPU, '0,1' for two GPUs, '' when num_gpus is 0
+
 datasets:
-    data_path: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/speech_attribute/datasets/CommonVoice13_CN'
+    data_path: 'PATH/TO/YOUR/DATASET'
     train_part: 'train'
     validation_part: 'validation'
     test_part: 'test,validation'
-    cache_dir: '/Users/evanchan19/Desktop/cache_dir'
+    cache_dir: 'PATH/TO/YOUR/CACHE_DIR'
 
 phonological:
     attribute_list_file: 'data/Mandarin_List_attr_withDiph.txt'   # KEYYYYYYYYYYYY
@@ -24,9 +28,10 @@ preprocessor:
     diphthongs_to_monophthongs_map_file: 'data/Diphthongs_Mandarin.csv'
 
 training:
-    model_path: 'C:\\Users\\Evanc\\Desktop\\Machine_Leraning\\Mostafa_Phono_model\\models\\wav2vec2-large-robust'
+    model_path: 'facebook/wav2vec2-large-robust'
     gradient_checkpointing: true
     ctc_loss_reduction: 'mean'
+    ctc_zero_infinity: true
     freeze_feature_encoder: true
     group_by_length: true
     train_batch_size: 32
@@ -39,16 +44,17 @@ training:
     learning_rate: 1.5e-04         # 1e-05
     weight_decay: 0.005            # 0.005
     warmup_ratio: 0.2               # 0.1
+    max_grad_norm: 5.0
     load_best_model_at_end: true
     save_total_limit: 2
 
 evaluation:
     spaces_between_special_tokens: true
     metric_path: 'metrics/wer.py'
-    eval_extra_data: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/speech_attribute/datasets/CommonVoice13_V4'
+    eval_extra_data: 'PATH/TO/YOUR/EVALUATION_DATASET'
     eval_extra_data_parts: 'test'
-    eval_model_path: '/Users/evanchan19/Desktop/Thesis_Research/Mostafa_Phono_model/models/cVoice13_withDiph_LR_v2'
+    eval_model_path: 'PATH/TO/YOUR/FINE_TUNED_MODEL'
     auto_eval: true
 
 output:
-    working_dir: '/Users/evanchan19/Desktop/evulation'
+    working_dir: 'PATH/TO/YOUR/OUTPUT_DIR'

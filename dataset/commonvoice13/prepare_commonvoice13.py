@@ -14,7 +14,6 @@ import re
 import unicodedata
 from pathlib import Path
 
-
 IPA_EXCEPTIONS = [
     "pʰ",
     "ts",
@@ -120,9 +119,9 @@ def contains_non_chinese(sentence: str) -> bool:
     for char in sentence:
         if char.isascii():
             return True
-        if "\u3040" <= char <= "\u309F" or "\u30A0" <= char <= "\u30FF":
+        if "\u3040" <= char <= "\u309f" or "\u30a0" <= char <= "\u30ff":
             return True
-        if "\u0370" <= char <= "\u03FF":
+        if "\u0370" <= char <= "\u03ff":
             return True
         if unicodedata.category(char).startswith("S"):
             return True
@@ -192,11 +191,7 @@ def load_vowel_set(mapping_csv: Path) -> set[str]:
     import pandas as pd
 
     frame = pd.read_csv(mapping_csv)
-    return {
-        str(row["Phoneme_ipaDragon"])
-        for _, row in frame.iterrows()
-        if int(row["vowel"]) == 1
-    }
+    return {str(row["Phoneme_ipaDragon"]) for _, row in frame.iterrows() if int(row["vowel"]) == 1}
 
 
 def add_ipa_with_tone(ipa_text: str, tone_text: str, vowel_set: set[str]) -> str:
@@ -258,9 +253,7 @@ def main() -> None:
         if split_name not in data:
             continue
         print(f"[INFO] Filtering non-Chinese content from {split_name}")
-        data[split_name] = data[split_name].filter(
-            lambda example: bool(example["sentence"]) and not contains_non_chinese(example["sentence"])
-        )
+        data[split_name] = data[split_name].filter(lambda example: bool(example["sentence"]) and not contains_non_chinese(example["sentence"]))
 
     print("[INFO] Adding IPA transcripts")
     for split_name in ("train", "validation", "test"):

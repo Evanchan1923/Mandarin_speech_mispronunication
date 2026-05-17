@@ -11,13 +11,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-""" Word Error Ratio (WER) metric. """
+"""Word Error Ratio (WER) metric."""
 
 import datasets
 from jiwer import compute_measures
 
 import evaluate
-
 
 _CITATION = """\
 @inproceedings{inproceedings,
@@ -104,7 +103,7 @@ class WER(evaluate.Metric):
                 incorrect += measures["substitutions"] + measures["deletions"] + measures["insertions"]
                 total += measures["substitutions"] + measures["deletions"] + measures["hits"]
             return incorrect / total
-        
+
     def compute_types(self, predictions=None, references=None, concatenate_texts=False):
         if concatenate_texts:
             return compute_measures(references, predictions)["wer"]
@@ -112,8 +111,8 @@ class WER(evaluate.Metric):
             substitutions, deletions, insertions, hits = 0, 0, 0, 0
             for prediction, reference in zip(predictions, references):
                 measures = compute_measures(reference, prediction)
-                substitutions +=  measures["substitutions"]
-                deletions +=  measures["deletions"]
+                substitutions += measures["substitutions"]
+                deletions += measures["deletions"]
                 insertions += measures["insertions"]
                 hits += measures["hits"]
             return substitutions, deletions, insertions, hits

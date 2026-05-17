@@ -1,5 +1,9 @@
 .DS_Store
 __pycache__/
 *.pyc
+.env
+.env.*
+*.secret
+secrets/
 dataset/LATIC-L2/generated/
 dataset/commonvoice13/prepared/

@@ -29,19 +29,16 @@ This is the core implementation area for:
 - model configuration,
 - training scripts,
 - phoneme or attribute transcription logic,
-- and related utilities used in the thesis experiments.
+- related utilities used in the thesis experiments,
+- and the evaluation notebooks under [`mandarin_p2a_model/evaluation/`](mandarin_p2a_model/evaluation/).
 
-### `model_evulation/`
-
-The [`model_evulation/`](model_evulation/) folder contains notes, notebooks, and partial workflows for evaluation.
-
-This part of the repository is not fully finished yet. It is included mainly as research reference material showing the intended evaluation direction, rather than a final polished evaluation package.
+The evaluation section inside `mandarin_p2a_model/` is not fully finished yet. It is included mainly as research reference material showing the intended evaluation direction, rather than a final polished evaluation package.
 
 ## Notes for Researchers
 
 - Start with `dataset/` if you want to understand how the AISHELL, LATIC, and Common Voice 13 datasets were converted for the model.
 - Start with `mandarin_p2a_model/` if you want to inspect or reuse the training pipeline.
-- Treat `model_evulation/` as work-in-progress documentation and exploratory evaluation material.
+- Treat [`mandarin_p2a_model/evaluation/`](mandarin_p2a_model/evaluation/) as work-in-progress documentation and exploratory evaluation material.
 
 ## Current Status
 

@@ -1,6 +1,6 @@
 # 📁 Mispronunciation Detection & Model Evaluation
 
-This directory contains evaluation scripts and notebooks designed for:
+This directory contains evaluation notebooks and notes designed for:
 
 - Testing the **Mandarin speech attribute recognition model**
 - Performing **mispronunciation detection and analysis**
@@ -14,6 +14,8 @@ This directory contains evaluation scripts and notebooks designed for:
 ---
 
 ## 📊 Evaluation Notebooks
+
+The following notebook filenames are the current names in this folder:
 
 ### `model_evaluation.ipynb`
 - General evaluation of model performance.
