@@ -2,3 +2,4 @@
 __pycache__/
 *.pyc
 dataset/LATIC-L2/generated/
+dataset/commonvoice13/prepared/

@@ -16,6 +16,7 @@ The `dataset/` folder contains example dataset-conversion workflows used for the
 
 - [`dataset/aishell-native/`](dataset/aishell-native/): example conversion assets for the AISHELL native Mandarin dataset.
 - [`dataset/LATIC-L2/`](dataset/LATIC-L2/): example conversion assets for the LATIC L2 Mandarin learner dataset.
+- [`dataset/commonvoice13/`](dataset/commonvoice13/): example conversion assets for the Mandarin Common Voice 13 dataset downloaded from Hugging Face.
 
 These folders include the source metadata, notebooks, and script-based preprocessing utilities used to turn the datasets into a format that can be consumed by the model pipeline.
 
@@ -38,7 +39,7 @@ This part of the repository is not fully finished yet. It is included mainly as 
 
 ## Notes for Researchers
 
-- Start with `dataset/` if you want to understand how the AISHELL and LATIC datasets were converted for the model.
+- Start with `dataset/` if you want to understand how the AISHELL, LATIC, and Common Voice 13 datasets were converted for the model.
 - Start with `mandarin_p2a_model/` if you want to inspect or reuse the training pipeline.
 - Treat `model_evulation/` as work-in-progress documentation and exploratory evaluation material.
 
