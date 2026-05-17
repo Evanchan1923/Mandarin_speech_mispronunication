@@ -5,6 +5,9 @@ This directory contains evaluation scripts and notebooks designed for:
 - Testing the **Mandarin speech attribute recognition model**
 - Performing **mispronunciation detection and analysis**
 
+> ⚠️ **Work in progress:**  
+> This evaluation section was not fully finished for open-source release yet. The notebooks are being kept as research notes and partial examples rather than a finalized evaluation toolkit.
+
 > ✅ **Important:**  
 > Please ensure you have a **working Mandarin Attribute Recognition model** trained and saved before proceeding with the evaluations below.
 
@@ -37,4 +40,3 @@ Each notebook is pre-configured for mispronunciation detection tasks but can be 
 
 ## 💡 Tip
 Use consistent phoneme and tone notations that match your training configuration (e.g., `phoneme_column`, `IPA_column`, `tone_scheme`), especially when adapting the scripts to new datasets.
-

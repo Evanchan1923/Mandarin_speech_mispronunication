@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 import os
 import argparse
-from tqdm import tqdm
-from datasets import load_dataset, DatasetDict
 import re
-from dragonmapper import hanzi
 
 def extract_transcripts(audio_filenames, transcript_file, filename_output, text_output):
     """
@@ -44,6 +41,8 @@ def filter_data_based_on_transcripts(data, transcript_file):
     """
     Filter the dataset to keep only those audio files listed in transcript_file.
     """
+    from tqdm import tqdm
+
     with open(transcript_file, 'r', encoding='utf-8') as file:
         lines = {line.strip() for line in file}
 
@@ -71,6 +70,8 @@ exceptions = [
 ]
 
 def convert_phoneme(input_string):
+    from dragonmapper import hanzi
+
     try:
         s = remove_punctuation(input_string)
         ipa_result = hanzi.to_ipa(s, delimiter=' ', all_readings=False, container='[]')
@@ -109,13 +110,16 @@ def replace_five_with_zero(example):
     return example
 
 def main():
+    from datasets import load_dataset, DatasetDict
+    from tqdm import tqdm
+
     args = parse_args()
 
-    # 1) Load dataset
-    base_path = os.getcwd()
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    metadata_dir = os.path.abspath(args.metadata_dir)
 
-    # Load dataset
-    data_path = os.path.join(base_path, '..', 'data', 'WAVA')
+    # 1) Load dataset
+    data_path = os.path.join(base_path, 'data', 'WAVA')
     print(f"Loading audio dataset from: {data_path}")
     data = load_dataset("audiofolder", data_dir=data_path)
 
@@ -127,22 +131,23 @@ def main():
 
     # 3) Extract transcripts
     scripts = {
-        os.path.join(base_path, "..", "data", "SCRIPT", "Actual_text", "total_transcript.txt"):
-            ("actual_wav.txt", "actual_transcript.txt"),
-        os.path.join(base_path, "..", "data", "SCRIPT", "Suppose_text", "total_transcript.txt"):
-            ("suppose_wav.txt", "suppose_transcript.txt"),
+        os.path.join(base_path, "data", "SCRIPT", "Actual_text", "total_transcript.txt"):
+            (os.path.join(metadata_dir, "actual_wav.txt"), os.path.join(metadata_dir, "actual_transcript.txt")),
+        os.path.join(base_path, "data", "SCRIPT", "Suppose_text", "total_transcript.txt"):
+            (os.path.join(metadata_dir, "suppose_wav.txt"), os.path.join(metadata_dir, "suppose_transcript.txt")),
     }
+    os.makedirs(metadata_dir, exist_ok=True)
     for transcript_file, (fname_out, txt_out) in scripts.items():
         extract_transcripts(audio_filenames, transcript_file, fname_out, txt_out)
 
     # 4) Filter dataset by transcripts
-    data["train"] = filter_data_based_on_transcripts(data, "actual_wav.txt")
-    data["train"] = filter_data_based_on_transcripts(data, "suppose_wav.txt")
+    data["train"] = filter_data_based_on_transcripts(data, os.path.join(metadata_dir, "actual_wav.txt"))
+    data["train"] = filter_data_based_on_transcripts(data, os.path.join(metadata_dir, "suppose_wav.txt"))
 
     # 5) Insert sentences
-    with open("actual_transcript.txt", encoding="utf-8") as f:
+    with open(os.path.join(metadata_dir, "actual_transcript.txt"), encoding="utf-8") as f:
         actual = [l.strip() for l in f]
-    with open("suppose_transcript.txt", encoding="utf-8") as f:
+    with open(os.path.join(metadata_dir, "suppose_transcript.txt"), encoding="utf-8") as f:
         suppose = [l.strip() for l in f]
 
     def add_sentences(example, idx):
@@ -153,9 +158,9 @@ def main():
     data["train"] = data["train"].map(add_sentences, with_indices=True)
 
     # 6) Insert tones
-    with open("tone_actual.txt", encoding="utf-8") as f:
+    with open(os.path.join(metadata_dir, "tone_actual.txt"), encoding="utf-8") as f:
         tone_actual = [l.strip() for l in f]
-    with open("tone_suppose.txt", encoding="utf-8") as f:
+    with open(os.path.join(metadata_dir, "tone_suppose.txt"), encoding="utf-8") as f:
         tone_suppose = [l.strip() for l in f]
 
     def add_tones(example, idx):
@@ -189,7 +194,13 @@ def main():
     
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Prepare and split your Mandarin audio-transcript dataset"
+        description="Prepare and split the LATIC-L2 Mandarin audio-transcript dataset"
+    )
+    parser.add_argument(
+        "--metadata-dir",
+        type=str,
+        default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "generated"),
+        help="Directory containing the helper text files used during conversion."
     )
     parser.add_argument(
         "--split-ratio",
@@ -210,4 +221,4 @@ if __name__ == "__main__":
     main()
 
 # API EXAMPLE
-# python data_conversion.py --output-path /YOUR_OWN_PATH/ --split-ratio 0.3
+# python data_conversion.py --metadata-dir ./generated --output-path /YOUR_OWN_PATH/ --split-ratio 0.3
